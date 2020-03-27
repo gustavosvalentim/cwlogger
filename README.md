@@ -17,3 +17,8 @@ import cwlogger.core as cwlogger
 logger = cwlogger.CWLogger('/aws/service/resource_name')
 logger.tail()
 ```
+
+If you want to use a profile that is not the default, use.
+```python
+logger = cwlogger.CWLogger('log_group', profile_name='your-profile-name')
+```

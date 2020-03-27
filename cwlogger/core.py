@@ -5,10 +5,11 @@ import boto3
 
 
 class CWLogger:
-    def __init__(self, log_group):
+    def __init__(self, log_group, profile_name=None):
+        botosession = boto3.Session(profile_name=profile_name)
         self.log_group = log_group
         self.start_time = int(datetime.datetime.today().timestamp()) * 1000
-        self.client = boto3.client('logs')
+        self.client = botosession.client('logs')
         self.wait_time = 2
 
     def __tail_logger(self):
@@ -25,11 +26,12 @@ class CWLogger:
                     events.append(event['eventId'])
                     yield event
 
+                time.sleep(self.wait_time)
+
     def tail(self):
         try:
             for event in self.__tail_logger():
                 print(event['message'])
-                time.sleep(self.wait_time)
         except KeyboardInterrupt:
             print('Shutdown by user.')
             exit()
