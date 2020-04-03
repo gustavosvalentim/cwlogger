@@ -11,11 +11,19 @@ API to manage CloudWatch Log Group events using Python.
 `pip install ./cwlogger`
 
 # Usage
+Get logs in real-time as they are generated
 ```python
 import cwlogger.core as cwlogger
 
 logger = cwlogger.CWLogger('/aws/service/resource_name')
-logger.tail()
+for log in logger.get_logs(watch=True):
+    # manage your log
+```
+
+Get all logs from a date range
+```python
+for log in logger.get_logs(start='-2days', end='-1days'):
+    # manage your logs
 ```
 
 If you want to use a profile that is not the default, use.
